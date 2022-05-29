@@ -10,44 +10,87 @@ import static io.restassured.RestAssured.get;
 public class PeselValidatorErrorTests {
 
     /**
-     * Given too short pesel the response error code should be 'INVL' (InValidLength)
-     * Expected: True
+     * Too short pesel.
+     * result:
+     * only: 'INVL' (InValidLength)
      */
     @Test
-    public static void invalidLengthErrCodeTest() {
+    public static void tooShortPeselErrCodeTest() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=123");
         ArrayList<String> error = response.path("errors.errorCode");
         Assert.assertEquals(error.get(0), "INVL", "The error code does not match ");
+        Assert.assertEquals(error.size(),1,"There is more than one error");
     }
 
     /**
-     * Given too short pesel the response error message should be
+     * Too short pesel.
+     * result:
      * 'Invalid length. Pesel should have exactly 11 digits.
-     * Expected: True
+     *
      */
     @Test
-    public static void invalidLengthErrMsgTest() {
+    public static void tooShortPeselErrMsgTest() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=123");
         ArrayList<String> errorMessage = response.path("errors.errorMessage");
         Assert.assertEquals(errorMessage.get(0), "Invalid length. Pesel should have exactly 11 digits.", "The error messages does not match ");
     }
 
     /**
-     * Given wrong pesel (containing 11 letters)
-     * the response error code should be 'NBRQ'
-     * Expected: True
+     * Too short pesel.
+     * result:
+     * only: 'INVL' (InValidLength)
      */
     @Test
-    public static void invalidCharactersErrCodeTest() {
+    public static void tooLongPeselErrCodeTest() {
+        Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=123123123123");
+        ArrayList<String> error = response.path("errors.errorCode");
+        Assert.assertEquals(error.get(0), "INVL", "The error code does not match ");
+        Assert.assertEquals(error.size(),1,"There is more than one error");
+    }
+
+    /**
+     * Too short pesel.
+     * result:
+     * 'Invalid length. Pesel should have exactly 11 digits.
+     *
+     */
+    @Test
+    public static void tooLongPeselErrMsgTest() {
+        Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=123123123123");
+        ArrayList<String> errorMessage = response.path("errors.errorMessage");
+        Assert.assertEquals(errorMessage.get(0), "Invalid length. Pesel should have exactly 11 digits.", "The error messages does not match ");
+        Assert.assertEquals(errorMessage.size(),1,"There is more than one error");
+    }
+
+    /**
+     * pesel: containing 11 letters
+     * result:
+     * 'NBRQ' error code
+     */
+    @Test
+    public static void onlyLettersErrCodeTest() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=jedenaściel");
         ArrayList<String> error = response.path("errors.errorCode");
         Assert.assertEquals(error.get(0), "NBRQ", "The error codes does not match ");
     }
 
     /**
-     * Given wrong pesel (containing 10 digits and one special char )
-     * the only error code should be 'NBRQ'
-     * the only error message should be 'Invalid characters. Pesel should be a number.'
+     * pesel: containing 11 letters
+     * result:
+     * 'NBRQ' error code
+     */
+    @Test
+    public static void onlyLettersErrMsgTest() {
+        Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=jedenaściel");
+        ArrayList<String> error = response.path("errors.errorMessage");
+        Assert.assertEquals(error.get(0), "Invalid characters. Pesel should be a number.", "The error codes does not match ");
+    }
+
+    /**
+     * pesel: containing 10 digits and one special char
+     * result:
+     * 'NBRQ' error code
+     * 'Invalid characters. Pesel should be a number.' error message
      */
     @DataProvider
     public static Object[][] specialCharacters() {

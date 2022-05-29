@@ -26,7 +26,7 @@ public class PeselValidatorResponseBodyTests {
     Expected: true
      */
     @Test
-    public static void testIfCorrectPeselFormatIsRecognizedAsValid(){
+    public static void isValid_true_jsonFieldTest(){
         Response response=get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=97022153388");
         boolean isValid  = response.path("isValid");
         Assert.assertEquals(isValid, true, "Pesel format is not valid(should be)");
@@ -36,7 +36,7 @@ public class PeselValidatorResponseBodyTests {
     Given wrong pesel format, check if response 'isValid' field equals false
      */
     @Test
-    public static void testIfIncorrectPeselFormatIsRecognizedAsInvalid(){
+    public static void isValid_false_jsonFieldTest(){
         Response response=get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=9702215d3388");
         boolean isValid  = response.path("isValid");
         Assert.assertEquals(isValid, false, "Pesel format is valid (should not be)");
@@ -89,7 +89,7 @@ public class PeselValidatorResponseBodyTests {
         };
     }
     @Test(dataProvider = "correctDates")
-    public static void boundaryDaysShouldBeRecongnized(String pesel,String expDate){
+    public static void boundaryDaysShouldBeRecognized(String pesel,String expDate){
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel="+pesel);
         String outputDate = response.path("dateOfBirth");
         outputDate = outputDate.split("T")[0];
