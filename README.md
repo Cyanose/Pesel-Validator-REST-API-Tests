@@ -2,13 +2,13 @@
 
 Automated tests to PeselValidator REST API endpoint (https://peselvalidatorapitest.azurewebsites.net/swagger/index.html) written in Java, using rest-assured and TestNG libraries. Test cases were derived basing on documentation provided on Swegger, as well as the regulatory rules for assigning pesel numbers (https://www.gov.pl/web/gov/czym-jest-numer-pesel).
 
-ResponseCodeTests is a test suite that contains http status code tests:
+#### ResponseCodeTests is a test suite that contains http status code tests:
 
 * TC1: status code 200 in response to proper request
 * TC2: status code 200 in response to request with invalid pesel (fine according to docs)
 * TC3: status code 400 in response to request with missing pesel
 
-ErrorTests is a test suite that tests error codes and error messages that are being returned in response to invalid reqeuest.
+#### ErrorTests is a test suite that tests error codes and error messages that are being returned in response to invalid reqeuest:
 
 * Tc1: Too short pesel - error code
 * Tc2: Too short pesel - error message
@@ -31,7 +31,7 @@ ErrorTests is a test suite that tests error codes and error messages that are be
 * Tc19: check sum: invalid check sum - error code
 * Tc20: check sum: invalid check sum - error message
 
-ResponseBodyTests is a test suite that tests response body returned as a result of valid request.
+#### ResponseBodyTests is a test suite that tests response body returned as a result of valid request:
 
 * Tc1: 'pesel' json field is identical to the one passed as an parameter in request
 * Tc2: 'isValid' json field is true when request contains valid pesel 
