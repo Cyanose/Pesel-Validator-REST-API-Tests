@@ -1,4 +1,4 @@
-# PeselValidatorApiTests
+# Pesel Validator Api Tests
 
 Automated tests to PeselValidator REST API endpoint (https://peselvalidatorapitest.azurewebsites.net/swagger/index.html) written in Java, using rest-assured and TestNG libraries. Test cases were derived basing on documentation provided on Swegger, as well as the regulatory rules for assigning pesel numbers (https://www.gov.pl/web/gov/czym-jest-numer-pesel).
 
