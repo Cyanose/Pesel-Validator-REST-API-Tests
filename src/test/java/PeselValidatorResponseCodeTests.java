@@ -12,7 +12,7 @@ public class PeselValidatorResponseCodeTests {
      * Expected code: 200 (OK)
      */
     @Test
-    public static void validPeselGetRequest_ResponseCodeTest() {
+    public static void shouldReturn200() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=97022137850");
         Assert.assertEquals(response.statusCode(), 200, "Status code does not equals 200");
         System.out.println(response.asPrettyString().contains("Male"));
@@ -23,7 +23,7 @@ public class PeselValidatorResponseCodeTests {
      * Expected code: 200 (OK)
      */
     @Test
-    public static void inValidPeselGetRequest_ResponseCodeTest() {
+    public static void shouldAlsoReturn200() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=97o22137850");
         Assert.assertEquals(response.statusCode(), 200, "Status code does not equals 200");
     }
@@ -33,7 +33,7 @@ public class PeselValidatorResponseCodeTests {
      * Expected code: 400
      */
     @Test
-    public static void missingPeselArgumentGetRequest_ResponseCodeTest() {
+    public static void shouldReturn400() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel");
         Assert.assertEquals(response.statusCode(), 400, "Status code does not equals 400");
     }

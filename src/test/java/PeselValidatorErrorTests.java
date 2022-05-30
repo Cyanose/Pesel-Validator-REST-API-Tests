@@ -15,7 +15,7 @@ public class PeselValidatorErrorTests {
      * only: 'INVL' (InValidLength)
      */
     @Test
-    public static void tooShortPeselErrCodeTest() {
+    public static void shouldReturnINVL1() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=123");
         ArrayList<String> error = response.path("errors.errorCode");
         Assert.assertEquals(error.get(0), "INVL", "The error code does not match ");
@@ -29,7 +29,7 @@ public class PeselValidatorErrorTests {
      *
      */
     @Test
-    public static void tooShortPeselErrMsgTest() {
+    public static void shouldReturnINVLmsg1() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=123");
         ArrayList<String> errorMessage = response.path("errors.errorMessage");
         Assert.assertEquals(errorMessage.get(0), "Invalid length. Pesel should have exactly 11 digits.", "The error messages does not match ");
@@ -41,7 +41,7 @@ public class PeselValidatorErrorTests {
      * only: 'INVL' (InValidLength)
      */
     @Test
-    public static void tooLongPeselErrCodeTest() {
+    public static void shouldReturnINVL2() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=123123123123");
         ArrayList<String> error = response.path("errors.errorCode");
         Assert.assertEquals(error.get(0), "INVL", "The error code does not match ");
@@ -55,7 +55,7 @@ public class PeselValidatorErrorTests {
      *
      */
     @Test
-    public static void tooLongPeselErrMsgTest() {
+    public static void shouldReturnINVLmsg2() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=123123123123");
         ArrayList<String> errorMessage = response.path("errors.errorMessage");
         Assert.assertEquals(errorMessage.get(0), "Invalid length. Pesel should have exactly 11 digits.", "The error messages does not match ");
@@ -68,7 +68,7 @@ public class PeselValidatorErrorTests {
      * 'NBRQ' error code
      */
     @Test
-    public static void onlyLettersErrCodeTest() {
+    public static void shouldReturnNBRQ() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=jedenaściel");
         ArrayList<String> error = response.path("errors.errorCode");
         Assert.assertEquals(error.get(0), "NBRQ", "The error codes does not match ");
@@ -80,7 +80,7 @@ public class PeselValidatorErrorTests {
      * 'NBRQ' error code
      */
     @Test
-    public static void onlyLettersErrMsgTest() {
+    public static void shouldReturnNBRQmsg() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=jedenaściel");
         ArrayList<String> error = response.path("errors.errorMessage");
         Assert.assertEquals(error.get(0), "Invalid characters. Pesel should be a number.", "The error codes does not match ");
@@ -115,7 +115,7 @@ public class PeselValidatorErrorTests {
     }
 
     @Test(dataProvider = "specialCharacters")
-    public static void specialCharsInPeselErrorTest(String specialChar) {
+    public static void shouldReturnNBRQAndMsg1(String specialChar) {
         String url = "https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=1231231231";
 
         Response response = get(url.concat(specialChar));
@@ -153,7 +153,7 @@ public class PeselValidatorErrorTests {
      * the only error message should be 'Invalid characters. Pesel should be a number.'
      */
     @Test(dataProvider = "letters")
-    public static void lettersInPeselErrorTest(String letter) {
+    public static void shouldReturnNBRQAndMsg2(String letter) {
         String url = "https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=1231231231";
 
         Response response = get(url.concat(letter));
@@ -174,7 +174,7 @@ public class PeselValidatorErrorTests {
      * 'INVM'
      */
     @Test
-    public static void invalidMonth_0_ErrCodeTest() {
+    public static void shouldFailMonth0() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=98000100011");
         ArrayList<String> errorCode = response.path("errors.errorCode");
         Assert.assertEquals(errorCode.get(0), "INVY", "The error code does not match");
@@ -190,7 +190,7 @@ public class PeselValidatorErrorTests {
      * 'Invalid month.'
      */
     @Test
-    public static void invalidMonth_0_errMsgTest() {
+    public static void shouldFailMonth0Msg() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=98000100011");
         ArrayList<String> errorMessage = response.path("errors.errorMessage");
         Assert.assertEquals(errorMessage.get(0), "Invalid year.", "The error message does not match");
@@ -206,7 +206,7 @@ public class PeselValidatorErrorTests {
      * 'INVM'
      */
     @Test
-    public static void invalidMonth_13_ErrCodeTest() {
+    public static void shouldFailMonth13() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=98130100017");
         ArrayList<String> errorCode = response.path("errors.errorCode");
         Assert.assertEquals(errorCode.get(0), "INVY", "The error code does not match");
@@ -222,7 +222,7 @@ public class PeselValidatorErrorTests {
      * 'Invalid month.'
      */
     @Test
-    public static void invalidMonth_13_ErrMsgTest() {
+    public static void shouldFailMonth13Msg() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=98130100017");
         ArrayList<String> errorMessage = response.path("errors.errorMessage");
         Assert.assertEquals(errorMessage.get(0), "Invalid year.", "The error message does not match");
@@ -236,7 +236,7 @@ public class PeselValidatorErrorTests {
      * only the 'INVD' error code should appear
      */
     @Test
-    public static void invalidDay_0_errCodeTest(){
+    public static void shouldFailDay0(){
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=98123323122");
         ArrayList<String> errorCode = response.path("errors.errorCode");
         Assert.assertEquals(errorCode.get(0), "INVD", "The error code does not match");
@@ -250,7 +250,7 @@ public class PeselValidatorErrorTests {
      * 'Invalid day.' error message should appear
      */
     @Test
-    public static void invalidDay_0_ErrMsgTest() {
+    public static void shouldFailDay0Msg() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=98123323122");
         ArrayList<String> errorMessage = response.path("errors.errorMessage");
         Assert.assertEquals(errorMessage.get(0), "Invalid day.", "The error message does not match");
@@ -264,7 +264,7 @@ public class PeselValidatorErrorTests {
      * only the 'INVD' error code should appear
      */
     @Test
-    public static void invalidDay_33_ErrCodeTest() {
+    public static void shouldFailDay33() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=98123323122");
         ArrayList<String> errorCode = response.path("errors.errorCode");
         Assert.assertEquals(errorCode.get(0), "INVD", "The error code does not match");
@@ -278,7 +278,7 @@ public class PeselValidatorErrorTests {
      * 'Invalid day.' error message should appear
      */
     @Test
-    public static void invalidDay_33_ErrMsgTest() {
+    public static void shouldFailDay33Msg() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=98123323122");
         ArrayList<String> errorMessage = response.path("errors.errorMessage");
         Assert.assertEquals(errorMessage.get(0), "Invalid day.", "The error message does not match");
@@ -294,7 +294,7 @@ public class PeselValidatorErrorTests {
      * the INVD error should be displayed
      */
     @Test
-    public static void inValidLeapYearErrCodeTest() {
+    public static void shouldFailItIsNotLeapYear() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=17222900014");
         ArrayList<String> errorCode = response.path("errors.errorCode");
 
@@ -309,7 +309,7 @@ public class PeselValidatorErrorTests {
      * the  error should be displayed
      */
     @Test
-    public static void inValidLeapYearErrMsgTest() {
+    public static void shouldFailItIsNotLeapYearMsg() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=17222900014");
         ArrayList<String> errorMsg = response.path("errors.errorMessage");
         Assert.assertEquals(errorMsg.get(0), "Invalid day.", "The error messages do not match");
@@ -323,7 +323,7 @@ public class PeselValidatorErrorTests {
      * 'INVC'
      */
     @Test
-    public static void invalidCheckSumErrCodeTest() {
+    public static void shouldReturnINVC() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=80013131572");
         ArrayList<String> errorCode = response.path("errors.errorCode");
         Assert.assertEquals(errorCode.get(0), "INVC", "The error code does not match");
@@ -337,7 +337,7 @@ public class PeselValidatorErrorTests {
      * 'Check sum is invalid. Check last digit.'
      */
     @Test
-    public static void invalidCheckSumErrMsgTest() {
+    public static void shouldReturnINVCMsg() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=80013131572");
         ArrayList<String> errorMessage = response.path("errors.errorMessage");
         Assert.assertEquals(errorMessage.get(0), "Check sum is invalid. Check last digit.", "The error message does not match");

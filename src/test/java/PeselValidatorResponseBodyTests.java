@@ -10,10 +10,9 @@ public class PeselValidatorResponseBodyTests {
     /**
     Given correct pesel format, check if response 'pesel' field equals
     the one given in request url
-    Expected: true
      */
     @Test
-    public static void testIfPeselJsonFieldIsOk(){
+    public static void shouldBeIdentical(){
         String adress = "https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=97022153388";
         String givenPesel =adress.split("=")[1];
         Response response=get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=97022153388");
@@ -23,10 +22,9 @@ public class PeselValidatorResponseBodyTests {
 
     /**
     Given correct pesel format, check if response 'isValid' field equals true
-    Expected: true
      */
     @Test
-    public static void isValid_true_jsonFieldTest(){
+    public static void shouldBeTrue(){
         Response response=get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=97022153388");
         boolean isValid  = response.path("isValid");
         Assert.assertEquals(isValid, true, "Pesel format is not valid(should be)");
@@ -36,13 +34,13 @@ public class PeselValidatorResponseBodyTests {
     Given wrong pesel format, check if response 'isValid' field equals false
      */
     @Test
-    public static void isValid_false_jsonFieldTest(){
+    public static void shouldBeFalse(){
         Response response=get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=9702215d3388");
         boolean isValid  = response.path("isValid");
         Assert.assertEquals(isValid, false, "Pesel format is valid (should not be)");
     }
     @DataProvider
-    public static Object[][] male_or_femalePesel(){
+    public static Object[][] maleOrFemalePesel(){
         return new Object[][]{
                 {"97022137812","Male"},   //gender digit: 1
                 {"97022137836","Male"},   //gender digit: 3
@@ -61,8 +59,8 @@ public class PeselValidatorResponseBodyTests {
     /**
     Given the male or female pesel the response should be adequate
      */
-    @Test(dataProvider = "male_or_femalePesel")
-    public static void genderShouldBeRecognized(String pesel, String expGender){
+    @Test(dataProvider = "maleOrFemalePesel")
+    public static void shouldRecognizeGender(String pesel, String expGender){
         String url = "https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=%s";
 
         Response response=get(String.format(url,pesel));
@@ -89,7 +87,7 @@ public class PeselValidatorResponseBodyTests {
         };
     }
     @Test(dataProvider = "correctDates")
-    public static void boundaryDaysShouldBeRecognized(String pesel,String expDate){
+    public static void shouldRecognizeBoundaryDays(String pesel,String expDate){
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel="+pesel);
         String outputDate = response.path("dateOfBirth");
         outputDate = outputDate.split("T")[0];
@@ -97,7 +95,7 @@ public class PeselValidatorResponseBodyTests {
     }
 
     /**
-     !! Corner case: person born in 1800year !!
+     Corner case: person born in 1800year
      Given the month number in range 80 - 92 the app should find out that the person's
      birth date is in range 1800 - 1899 year
      Year: 1800
@@ -106,7 +104,7 @@ public class PeselValidatorResponseBodyTests {
      pesel: 00813000019
      */
     @Test
-    public static void checkPersonBornIn1800() {
+    public static void shouldRecognizeSbdyBornIn1800() {
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=00813000019");
         String outputDate = response.path("dateOfBirth");
         outputDate = outputDate.split("T")[0];
@@ -116,7 +114,7 @@ public class PeselValidatorResponseBodyTests {
     }
 
     /**
-     !! Corner case: person born in 1900year !!
+     Corner case: person born in 1900year
      Month number in range 01-12
      Year: 1900
      Month: 01
@@ -124,7 +122,7 @@ public class PeselValidatorResponseBodyTests {
      pesel: 00013020813
      */
     @Test
-    public static void checkPersonBornIn1900(){
+    public static void shouldRecognizeSbdyBornIn1900(){
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=00013020813");
         String outputDate = response.path("dateOfBirth");
         outputDate = outputDate.split("T")[0];
@@ -133,7 +131,7 @@ public class PeselValidatorResponseBodyTests {
         Assert.assertEquals(outputDate, expectedDate, "Displayed Date of Birth is not correct");
     }
     /**
-     !! Corner case: person born in 2000year !!
+     Corner case: person born in 2000year
      Month number in range 21-32
      Year: 2000
      Month: 01
@@ -141,7 +139,7 @@ public class PeselValidatorResponseBodyTests {
      pesel: 00213073091
      */
     @Test
-    public static void checkPersonBornIn2000(){
+    public static void shouldRecognizeSbdyBornIn2000(){
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=00213073091");
         String outputDate = response.path("dateOfBirth");
         outputDate = outputDate.split("T")[0];
@@ -151,7 +149,7 @@ public class PeselValidatorResponseBodyTests {
     }
 
     /**
-     !! Corner case: person born in 2100year !!
+     Corner case: person born in 2100year
      Month number in range 41-52
      Year: 2100
      Month: 01
@@ -159,7 +157,7 @@ public class PeselValidatorResponseBodyTests {
      pesel: 004130000017
      */
     @Test
-    public static void checkPersonBornIn2100(){
+    public static void shouldRecognizeSbdyBornIn2100(){
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=00413000017");
         String outputDate = response.path("dateOfBirth");
         outputDate = outputDate.split("T")[0];
@@ -169,7 +167,7 @@ public class PeselValidatorResponseBodyTests {
     }
 
     /**
-     !! Corner case: person born in 2200year !!
+     Corner case: person born in 2200year
      Month number in range 61-72
      Year: 2200
      Month: 01
@@ -177,7 +175,7 @@ public class PeselValidatorResponseBodyTests {
      pesel: 00613000013
      */
     @Test
-    public static void checkPersonBornIn2200(){
+    public static void shouldRecognizeSbdyBornIn2200(){
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=00613000013");
         String outputDate = response.path("dateOfBirth");
         outputDate = outputDate.split("T")[0];
@@ -195,7 +193,7 @@ public class PeselValidatorResponseBodyTests {
      pesel: 99613000017
      */
     @Test
-    public static void checkPersonBornIn2299(){
+    public static void shouldRecognizeSbdyBornIn2299(){
 
         Response response = get("https://peselvalidatorapitest.azurewebsites.net/api/Pesel?pesel=99613000017");
         String outputDate = response.path("dateOfBirth");
